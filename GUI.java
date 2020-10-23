@@ -24,8 +24,6 @@ public class GUI extends JFrame {
      */
     JLabel directory;
 
-    String data_table[][] = {};
-
 
     JButton import_butt;
 
@@ -36,12 +34,14 @@ public class GUI extends JFrame {
         setSize(screen_width,screen_height);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         init_component();
         init_component2();
         init_input_component();
         init_result_panal();
         setLayout(null);
         setVisible(true);
+
 
     }
 

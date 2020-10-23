@@ -10,14 +10,16 @@ public class Individual {
     int fitness;
     int median[];
     int P;
+    int itr;
 
 
 
-    public Individual(String[] str_row,int P) throws Exception{
+    public Individual(String[] str_row,int P,int itr) throws Exception{
 
         this.demand = get_demand_distance(str_row);
         this.P = P;
         this.median = new int[P];
+        this.itr = itr;
 
     }
 
@@ -215,6 +217,7 @@ public class Individual {
         if(fitness<GeneticAlgorithm.best_distance){
             GeneticAlgorithm.best_distance = fitness;
             GeneticAlgorithm.best_solution = this;
+            GeneticAlgorithm.best_itr = itr;
         }
 
     }

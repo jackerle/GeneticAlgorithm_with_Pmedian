@@ -6,16 +6,17 @@ import java.util.Scanner;
 
 public class GeneticAlgorithm {
 
-    static int popsize = 100;   //input
+    static int popsize = 1000;   //input
     static int seed = 28;       //input
     static int P;
     static int maxgen = 1000;   //input
-    static int tournament_size = 80;   //input
+    static int tournament_size = 20;   //input
     static double crossoverrate = 0.8;  //input
     static double mutationrate = 0.02;  //input
     static int itr = 0;
     static String path = "F:\\code\\SpringbootWS\\PMedian\\src\\instance\\pmed1.in";
     static int best_distance = Integer.MAX_VALUE;
+    static int best_itr;
     static Individual best_solution = null;
     static Random rand = new Random((long)seed);
 
@@ -36,7 +37,7 @@ public class GeneticAlgorithm {
                 while(itr<maxgen){
                     try{
                         itr_gui.setText("Itr:"+(itr+1)+"/"+maxgen);
-                        best_gui.setText("Best:"+best_distance);
+                        best_gui.setText("Best:"+best_distance + " at itr : "+best_itr);
                         itr_gui.repaint();
                         best_gui.repaint();
                         itr_gui.paintImmediately(itr_gui.getVisibleRect());
@@ -62,7 +63,7 @@ public class GeneticAlgorithm {
         for(int i=0;i<popsize;i++) {
 
             //create population
-            population[i] = new Individual(str,P);
+            population[i] = new Individual(str,P,0);
 
             //Randomly select p-medians
             population[i].gen_rand_median(rand,P);
@@ -105,7 +106,7 @@ public class GeneticAlgorithm {
                 }
 
 //                System.out.println(offspring.length);
-                offspring[i] = new Individual(str,P);
+                offspring[i] = new Individual(str,P,itr);
                 offspring[i].median = population[champion].median;
                 offspring[i].demand = population[champion].demand;
 
@@ -114,8 +115,8 @@ public class GeneticAlgorithm {
             //Cross Overr
             for(int i = 0;i<popsize-1;i=i+2){
                 if(rand.nextDouble()<crossoverrate){
-                    int splitPoint = rand.nextInt(popsize);
-                    for(int j = splitPoint;j<popsize;j++){
+                    int splitPoint = rand.nextInt(offspring[i].demand.length);
+                    for(int j = splitPoint;j<offspring[i].demand.length;j++){
                         Demand temp = offspring[i].demand[j];
                         offspring[i].demand[j] = offspring[i+1].demand[j];
                         offspring[i+1].demand[j] = temp;
@@ -131,7 +132,7 @@ public class GeneticAlgorithm {
             //Mutation
             for(int i = 0;i<popsize;i++){
                 if(rand.nextDouble() < mutationrate){
-                    int mutationPoint  = rand.nextInt(popsize);
+                    int mutationPoint  = rand.nextInt(offspring[i].demand.length);
 
                     //toggle if mutate
                     if(offspring[i].demand[mutationPoint].isMedian)
@@ -174,7 +175,7 @@ public class GeneticAlgorithm {
         for(int i=0;i<popsize;i++) {
 
             //create population
-            population[i] = new Individual(str,P);
+            population[i] = new Individual(str,P,0);
 
             //Randomly select p-medians
             population[i].gen_rand_median(rand,P);
@@ -216,7 +217,7 @@ public class GeneticAlgorithm {
                 }
 
 //                System.out.println(offspring.length);
-                offspring[i] = new Individual(str,P);
+                offspring[i] = new Individual(str,P,itr);
                 offspring[i].median = population[champion].median;
                 offspring[i].demand = population[champion].demand;
 
@@ -225,8 +226,8 @@ public class GeneticAlgorithm {
             //Cross Overr
             for(int i = 0;i<popsize-1;i=i+2){
                 if(rand.nextDouble()<crossoverrate){
-                    int splitPoint = rand.nextInt(popsize);
-                    for(int j = splitPoint;j<popsize;j++){
+                    int splitPoint = rand.nextInt(offspring[i].demand.length);
+                    for(int j = splitPoint;j<offspring[i].demand.length;j++){
                         Demand temp = offspring[i].demand[j];
                         offspring[i].demand[j] = offspring[i+1].demand[j];
                         offspring[i+1].demand[j] = temp;
@@ -242,7 +243,7 @@ public class GeneticAlgorithm {
             //Mutation
             for(int i = 0;i<popsize;i++){
                 if(rand.nextDouble() < mutationrate){
-                    int mutationPoint  = rand.nextInt(popsize);
+                    int mutationPoint  = rand.nextInt(offspring[i].demand.length);
 
                     //toggle if mutate
                     if(offspring[i].demand[mutationPoint].isMedian)
@@ -266,6 +267,7 @@ public class GeneticAlgorithm {
 
 
             System.out.println("Lap "+itr+"/"+maxgen+" Best Solution is : "+best_solution);
+            Thread.sleep(500);
         }
 
 
